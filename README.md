@@ -36,7 +36,7 @@ python 03_store_postgres.py
 Or just run the whole pipeline:
 bashpython etl_pipeline.py
 Database
-Three tables in PostgreSQL: vehicle_makes, vehicle_models, and epa_fuel_economy (the main one with ~1000 records covering 2015–2024).
+Three tables in PostgreSQL: vehicle_makes, vehicle_models, and epa_fuel_economy (the main one, with 1,065 records covering 2015–2024).
 There's also a view called top_efficient_vehicles with the 50 most fuel-efficient vehicles.
 A few of the queries I used for analysis:
 sql-- average MPG per manufacturer
@@ -53,12 +53,22 @@ FROM epa_fuel_economy GROUP BY vehicle_class ORDER BY avg_mpg DESC;
 Orchestration
 The pipeline is automated with APScheduler — etl_pipeline.py runs the full sequence once immediately, then repeats every 24 hours.
 Dashboard
-Built in Power BI, connected directly to the PostgreSQL database. Three visuals:
+Built in Power BI, connected directly to the PostgreSQL database. The dashboard combines six visuals across two rows:
+Top row — distribution overview:
+
+Pie chart — fuel type distribution
+Donut chart — efficiency category breakdown (Low/Medium/High/Very High)
+Pie chart — drive type distribution (FWD/RWD/AWD/4WD)
+
+Bottom row — trends and comparisons:
 
 Bar chart — average MPG by manufacturer
-Line chart — efficiency trend by year
-Slicer — filter by fuel type
+Line chart — fuel efficiency trend by model year (2015–2024)
+Scatter plot — efficiency vs. emissions by vehicle class
 
+Plus three KPI cards (average CO2, total vehicles analyzed, average MPG) and a fuel type slicer for interactive filtering.
+What the data shows
+Fuel efficiency has improved noticeably since 2018, which lines up with the broader shift toward electric and hybrid vehicles in the market. Electric and hybrid-leaning brands (Fisker, BYD) top the efficiency rankings, while the scatter plot shows the expected trade-off between vehicle class size and combined MPG.
 Assignment requirements
 
  Public API as data source
@@ -69,6 +79,3 @@ Assignment requirements
  Virtual environment
  .env for credentials
  requirements.txt
-
-
-Yosra — MADSC301, EUBS Munich
